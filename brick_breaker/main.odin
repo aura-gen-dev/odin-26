@@ -12,6 +12,12 @@ PADDLE_PAD :: 25
 PADDLE_SPEED :: 3
 BALL_SIZE :: 10
 BALL_SPEED :: 4
+BRICK_WIDTH :: 100
+BRICK_HEIGHT :: 25
+BRICK_PAD :: 5
+BRICK_ROWS :: 7
+BRICK_COLS :: 8
+BRICK_TOP :: 100
 
 tick_timer: f32 = TICK_RATE
 game_over: bool
@@ -73,6 +79,12 @@ main :: proc() {
             move_direction = {0, 0}
 
             ball_pos += ball_dir * BALL_SPEED
+            if ball_pos.y - BALL_SIZE < 0 || ball_pos.y + BALL_SIZE > WINDOW_HEIGHT {
+                ball_dir.y *= -1
+            }
+            if ball_pos.x - BALL_SIZE < 0 || ball_pos.x + BALL_SIZE > WINDOW_WIDTH {
+                ball_dir.x *= -1
+            }
 
             tick_timer = TICK_RATE + tick_timer
         }
@@ -95,6 +107,18 @@ main :: proc() {
             BALL_SIZE,
             rl.WHITE,
         )
+
+        for i in 0..<BRICK_ROWS {
+            for j in 0..<BRICK_COLS {
+                rl.DrawRectangle(
+                    i32(BRICK_PAD + j * (BRICK_WIDTH + BRICK_PAD) + BRICK_WIDTH - BRICK_COLS*BRICK_PAD/2),
+                    i32(BRICK_TOP + i * (BRICK_HEIGHT + BRICK_PAD)),
+                    BRICK_WIDTH,
+                    BRICK_HEIGHT,
+                    rl.WHITE,
+                )
+            }
+        }
 
         rl.EndDrawing()
         free_all(context.temp_allocator)
