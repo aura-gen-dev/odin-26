@@ -1,6 +1,9 @@
 package brick_breaker
 
+import "core:fmt"
+
 import rl "vendor:raylib"
+import b2 "vendor:box2d"
 
 WINDOW_WIDTH :: 1000
 WINDOW_HEIGHT :: 600
@@ -71,6 +74,7 @@ main :: proc() {
             }
         } else {
             tick_timer -= rl.GetFrameTime()
+            fmt.printfln("%v", rl.GetFPS())
         }
 
         if tick_timer <= 0 {
