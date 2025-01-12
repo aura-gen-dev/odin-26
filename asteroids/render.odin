@@ -1,10 +1,11 @@
 package asteroids
 
 import "core:fmt"
+import "core:container/queue"
 import rl "vendor:raylib"
 
 
-handle_render :: proc(game: Game) {
+handle_render :: proc(game: ^Game) {
     rl.BeginDrawing()
     rl.ClearBackground({0, 0, 0, 255})
 
@@ -40,6 +41,26 @@ handle_render :: proc(game: Game) {
     }
     rl.DrawCircleV(circle_pos, game.player.size * 0.3, rl.WHITE)
 
+    // Render projectiles
+    for i in 0..<queue.len(game.projectiles) {
+        projectile := queue.get_ptr(&game.projectiles, i)
+        rl.DrawCircleV(
+            rl.Vector2{projectile.pos.x, projectile.pos.y},
+            PROJECTILE_SIZE,
+            rl.WHITE,
+        )
+    }
+
+    // Render asteroids
+    for asteroid in game.asteroids {
+        rl.DrawPoly(
+            rl.Vector2({asteroid.pos.x, asteroid.pos.y}),
+            asteroid.sides,
+            asteroid.size,
+            asteroid.rot,
+            rl.WHITE
+        )
+    }
 
     rl.EndDrawing()
 }

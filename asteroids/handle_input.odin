@@ -23,7 +23,7 @@ handle_input :: proc(game: ^Game) {
         game.player.velo *= FRICTION
     }
 
-    if rl.IsKeyDown(.SPACE) {
+    if rl.IsKeyPressed(.SPACE) {
         game.fire_projectile = true
     }
 }
